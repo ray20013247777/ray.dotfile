@@ -53,8 +53,9 @@ set smarttab            " insert tabs on the start of a line according to contex
 
 set wildchar=<TAB>      " when type command, use <tab> to do completion
 set wildmenu
-set showmatch
-set showmode
+set wildmode=longest:full,full
+set showmatch			" show the matching symbol, like { }
+set showmode			" show normal mode
 set noswapfile
 
 " disable sound on errors
@@ -161,11 +162,36 @@ let g:lt_height = 10
 " --- NERDTree & NERDTreeTabs----
 " don't open nerdtree_tabs when gvim/macvim open; otherwise, 0
 let g:nerdtree_tabs_open_on_gui_startup = 0
+
 " NERDTreeTabsToggle bind to <F2>
 map <F2> <Esc>:NERDTreeTabsToggle<CR>
+
 " NERDTreeToggle bind to <F2>
 "map <F2> :NERDTreeToggle<CR>
 "map <leader>n :NERDTreeTabsToggle<CR>
+
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+  exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+  endfunction
+  call NERDTreeHighlightFile('py',     'yellow',  'none', 'yellow',  '#151515')
+  call NERDTreeHighlightFile('md',     'blue',    'none', '#3366FF', '#151515')
+  call NERDTreeHighlightFile('yml',    'yellow',  'none', 'yellow',  '#151515')
+  call NERDTreeHighlightFile('config', 'yellow',  'none', 'yellow',  '#151515')
+  call NERDTreeHighlightFile('conf',   'yellow',  'none', 'yellow',  '#151515')
+  call NERDTreeHighlightFile('json',   'yellow',  'none', 'yellow',  '#151515')
+  call NERDTreeHighlightFile('html',   'yellow',  'none', 'yellow',  '#151515')
+  call NERDTreeHighlightFile('styl',   'cyan',    'none', 'cyan',    '#151515')
+  call NERDTreeHighlightFile('css',    'cyan',    'none', 'cyan',    '#151515')
+  call NERDTreeHighlightFile('rb',     'Red',     'none', 'red',     '#151515')
+  call NERDTreeHighlightFile('js',     'Red',     'none', '#ffa500', '#151515')
+  call NERDTreeHighlightFile('php',    'Magenta', 'none', '#ff00ff', '#151515')
+
+" NERDTress file arrow
+  let g:NERDTreeDirArrows = 1
+  let g:NERDTreeDirArrowExpandable  = '~'
+  let g:NERDTreeDirArrowCollapsible = '▼'
 " -------------------------
 
 " --- ctags ---------------
