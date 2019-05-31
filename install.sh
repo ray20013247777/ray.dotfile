@@ -5,7 +5,7 @@ show_usage() {
 	Usage: $(basename $0) [options]
 	Options:
 	-a        install basic apt packages
-	-i        install configs
+	-i        install configs & bin
 	-v        install vim
 	-s        install for synology
 	-u        uninstall configs and recover environments
@@ -14,9 +14,10 @@ show_usage() {
 EOF
 }
 
-while getopts "ahd" opt; do
+while getopts "ahdi" opt; do
 	case "$opt" in
 		a) InstallApt=yes;;
+		i) InstallConfig=yes;;
 		h) show_usage; exit 0;;
 		d) DEBUG=on;;
 	esac
@@ -30,6 +31,18 @@ exe() {
 	fi
 }
 
+install_git() {
+	ln -s $PWD/git/.gitconfig ~/
+}
+
+install_tmux() {
+	ln -s $PWD/tmux/.tmux.conf ~/
+}
+
+install_vim() {
+	ln -s $PWD/vim/.vimrc ~/
+}
+
 install_apt() {
 	exe "apt update"
 	exe "apt install -y git"
@@ -38,11 +51,26 @@ install_apt() {
 	exe "apt install -y python-pip python"
 	exe "apt install -y python3-pip python3"
 	exe "apt install -y silversearcher-ag id-utils"
+	exe "apt install tmux"
 
 	exe "pip3 install --upgrade requests"
 	exe "pip3 install --upgrade zdict"
 }
 
+install_config() {
+	
+	install_git
+	install_tmux
+
+}
+
 if [ "$InstallApt" ]; then
 	install_apt
 fi
+
+if [ $InstallConfig ]; then
+	echo "starting install config..."
+	install_config
+	echo "finish"
+fi
+
