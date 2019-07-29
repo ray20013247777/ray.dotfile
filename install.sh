@@ -61,6 +61,7 @@ install_config() {
 	
 	install_git
 	install_tmux
+	install_vim
 
 }
 
